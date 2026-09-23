@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Burger Stacker 3D</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- مكتبات Three.js و Firebase -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+
+    <div id="ui-layer">
+        <!-- لوحة الإحصائيات (HUD) -->
+        <div id="hud-panel" class="glass-card">
+            <div class="brand-title">
+                <span class="neon-text-orange">BURGER</span>
+                <span class="neon-text-green">STACK</span>
+                <span class="badge-3d">PRO</span>
+            </div>
+            <div class="divider"></div>
+            <div class="stat-row">
+                <span>طول البرجر:</span>
+                <span id="stack-height" class="stat-value highlight-green">0</span> طابق
+            </div>
+            <div class="stat-row">
+                <span>النقاط:</span>
+                <span id="score-val" class="stat-value highlight-orange">0</span>
+            </div>
+            <div class="stat-row">
+                <span>المحاولات (Lives):</span>
+                <div id="lives-container">❤️❤️❤️</div>
+            </div>
+        </div>
+
+        <!-- لوحة المتصدرين أونلاين -->
+        <div id="leaderboard-panel" class="glass-card">
+            <div class="panel-header">
+                <h3>أفضل الطهاة أونلاين</h3>
+                <span id="online-tag" class="online-tag">متصل 🟢</span>
+            </div>
+            <div class="divider"></div>
+            <div id="players-list">
+                <div class="player-row loading-row">جاري مزامنة الطهاة...</div>
+            </div>
+        </div>
+
+        <!-- أزرار الإعدادات السريعة -->
+        <div id="settings-quick-bar" class="glass-card">
+            <button id="btn-sound" class="icon-btn" title="الصوت">🔊</button>
+            <button id="btn-fullscreen" class="icon-btn" title="ملء الشاشة">⛶</button>
+        </div>
+
+        <!-- شريط التحكم -->
+        <div id="controls-hint" class="glass-card">
+            <div><span class="key-cap">A D</span> أو <span class="key-cap">الأسهم اليسار/اليمين</span> لتحريك الصحن</div>
+            <div><span class="key-cap">Space</span> لإسقاط المكون فوراً</div>
+        </div>
+
+        <!-- مؤشر الحالة -->
+        <div id="network-status" class="status-offline">
+            <span class="status-dot"></span>
+            <span id="status-text">وضع التدريب المحلي (أوفلاين)</span>
+        </div>
+
+        <!-- شاشة البداية -->
+        <div id="start-overlay" class="overlay-screen">
+            <div class="modal-box glass-card">
+                <h2>🍔 توب شيف البرجر النيوني</h2>
+                <p>ابنِ أعلى برج برجر ممكن! احذر من إسقاط المكونات خارج الصحن لئلا تخسر أرواحك.</p>
+                <div class="input-group">
+                    <label for="player-name">اسم الشيف:</label>
+                    <input type="text" id="player-name" placeholder="اكتب اسمك الأسطوري..." maxlength="12" value="شيف يزن">
+                </div>
+                <button id="btn-start" class="main-neon-btn">ابدأ الطبخ الآن 👨‍🍳</button>
+            </div>
+        </div>
+
+        <!-- شاشة خسارة اللعبة (Game Over) -->
+        <div id="gameover-overlay" class="overlay-screen hidden">
+            <div class="modal-box glass-card danger-border">
+                <h2 class="text-danger">💥 انهيار البرجر!</h2>
+                <p>لقد سقطت المكونات وتخرب البرجر بالكامل.</p>
+                <div class="stat-summary">
+                    <div>النتيجة النهائية: <span id="final-score">0</span> نقطة</div>
+                </div>
+                <button id="btn-restart" class="main-neon-btn danger-btn">حاول مجدداً 🔥</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
